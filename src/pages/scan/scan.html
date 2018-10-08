@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      CC C-tag Scanner
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>UserName</ion-label>
+      <ion-select [(ngModel)]="user" (ionChange)="onChangeUser()" *ngIf="!user?.length" >
+          <ion-option *ngFor="let name of Users" value="{{ name }}">
+              {{ name }}
+            </ion-option>
+    </ion-select>
+    <ion-label *ngIf="user?.length > 0">{{user}}</ion-label>
+  </ion-item>
+  </ion-list>
+
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Location</ion-label>
+      <ion-select [(ngModel)]="location">
+          <ion-option value="" >Please Choose</ion-option>
+          <ion-option value="Admin. Services" >Admin. Services</ion-option>
+          <ion-option value="ADR" >ADR</ion-option>
+          <ion-option value="Animal Services" >Animal Services</ion-option>
+          <ion-option value="Aquatic Center" >Aquatic Center</ion-option>
+          <ion-option value="Board of Equalization" >Board of Equalization</ion-option>
+          <ion-option value="Building & Safety" >Building & Safety</ion-option>
+          <ion-option value="CAT" >CAT</ion-option>
+          <ion-option value="CCPD" >CCPD</ion-option>
+          <ion-option value="CEMA" >CEMA</ion-option>
+          <ion-option value="Central Services" >Central Services</ion-option>
+          <ion-option value="Child Support" >Child Support</ion-option>
+          <ion-option value="CNT" >CNT</ion-option>
+          <ion-option value="CO-OP EXT." >CO-OP EXT.</ion-option>
+          <ion-option value="Coroner" >Coroner</ion-option>
+          <ion-option value="County Attorney" >County Attorney</ion-option>
+          <ion-option value="County Commission" >County Commission</ion-option>
+          <ion-option value="County Manager" >County Manager</ion-option>
+          <ion-option value="Court Reporter" >Court Reporter</ion-option>
+          <ion-option value="District Attorney" >District Attorney</ion-option>
+          <ion-option value="Elections Board" >Elections Board</ion-option>
+          <ion-option value="Engineering" >Engineering</ion-option>
+          <ion-option value="Facilities M&O" >Facilities M&O</ion-option>
+          <ion-option value="Finance" >Finance</ion-option>
+          <ion-option value="Fleet" >Fleet</ion-option>
+          <ion-option value="Human Resources" >Human Resources</ion-option>
+          <ion-option value="ICS" >ICS</ion-option>
+          <ion-option value="Indigent Defense" >Indigent Defense</ion-option>
+          <ion-option value="Indigent Defense:Misdemeanor" >Indigent Defense:Misdemeanor</ion-option>
+          <ion-option value="Internal Audit" >Internal Audit</ion-option>
+          <ion-option value="Judicial Operations" >Judicial Operations</ion-option>
+          <ion-option value="Juvenile Court" >Juvenile Court</ion-option>
+          <ion-option value="Law Library" >Law Library</ion-option>
+          <ion-option value="Library" >Library</ion-option>
+          <ion-option value="M/WBE" >M/WBE</ion-option>
+          <ion-option value="Magistrate Court" >Magistrate Court</ion-option>
+          <ion-option value="Marine Patrol" >Marine Patrol</ion-option>
+          <ion-option value="Mosquito Control" >Mosquito Control</ion-option>
+          <ion-option value="MPC" >MPC</ion-option>
+          <ion-option value="Occupational Safety" >Occupational Safety</ion-option>
+          <ion-option value="Park & Recreation" >Park & Recreation</ion-option>
+          <ion-option value="Police" >Police</ion-option>
+          <ion-option value="Print Shop" >Print Shop</ion-option>
+          <ion-option value="Probate Court" >Probate Court</ion-option>
+          <ion-option value="Public Defender" >Public Defender</ion-option>
+          <ion-option value="Public Works" >Public Works</ion-option>
+          <ion-option value="Purchasing" >Purchasing</ion-option>
+          <ion-option value="Recorder's Court" >Recorder's Court</ion-option>
+          <ion-option value="Sheriff" >Sheriff</ion-option>
+          <ion-option value="State Court Clerk" >State Court Clerk</ion-option>
+          <ion-option value="State Court DUI Court" >State Court DUI Court</ion-option>
+          <ion-option value="State Court Judiciary" >State Court Judiciary</ion-option>
+          <ion-option value="Superior Court Admin" >Superior Court Admin</ion-option>
+          <ion-option value="Superior Court Clerk" >Superior Court Clerk</ion-option>
+          <ion-option value="Superior Court Judiciary" >Superior Court Judiciary</ion-option>
+          <ion-option value="Tag Office" >Tag Office</ion-option>
+          <ion-option value="Tax Assessor" >Tax Assessor</ion-option>
+          <ion-option value="Tax Commissioner" >Tax Commissioner</ion-option>
+          <ion-option value="Victim-Witness" >Victim-Witness</ion-option>
+          <ion-option value="Voter Registration" >Voter Registration</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button class="button button-block icon icon-left ion-home" (click)="scan()"  color="secondary" >Start Scanning</button>
+    </ion-item>
+    <br/>
+    
+    <ion-list>
+        <ul>
+          <ion-item *ngFor="let item of scannedItems" class="card item-text-wrap hidden" style="word-wrap: break-word; word-break: break-all; font-size:smaller">
+            <li class="item-text-wrap" style="word-wrap: break-word; word-break: break-all;">Tag: {{item.TagNo}} -  Location: {{item.Location}}</li>
+          </ion-item>
+        </ul>
+    </ion-list>
+
+    <hr/>
+        <ion-item>
+          <h5>Warning: Dragons Ahead</h5>
+          <button ion-button class="button button-assertive" (click)="clearscan()"  color="danger">Clear Memory</button>
+        </ion-item>
+  
+  </ion-list>
+<hr/>
+  <div class="card item-text-wrap " style="word-wrap: break-word; word-break: break-all; display:block">
+     <textarea width="100%" class="ionic-col-12" style="margin: 0px; width: 100%; min-height: 200px">
+      <div ion-content="{{logs}}"></div> {{logs}}
+    </textarea>
+  </div>
+
+  
+</ion-content>

@@ -3,38 +3,57 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { LookupPage } from '../pages/lookup/lookup';
+import { ScanPage } from '../pages/scan/scan';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+//Barcode scanner
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+//Popups
+import { Toast } from '@ionic-native/toast';
+
+//Ionic Storage w sqlLite
+import { FavoriteProvider } from './../providers/favorite/favorite';
+import { IonicStorageModule } from '@ionic/storage';
+
+//Post functions
+import { HttpClientModule  } from '@angular/common/http';
+
+
+
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
+    LookupPage,
+    ScanPage,
     HomePage,
     TabsPage
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
+    LookupPage,
+    ScanPage,
     HomePage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    FavoriteProvider,
+    BarcodeScanner,
+    Toast
   ]
 })
 export class AppModule {}
