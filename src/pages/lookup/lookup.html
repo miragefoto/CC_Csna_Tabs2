@@ -13,19 +13,13 @@
   <br/>
   
   <ion-list>
-      <ul>
-        <ion-item class="card item-text-wrap" style="word-wrap: break-word; word-break: break-all; font-size:smaller">
-          <li class="item-text-wrap" >Tag: SampleTag</li>
-          <li class="item-text-wrap" >
-            <ul>
-              <li>Location: Some Department</li>
-              <li>Warranty Date: 12/31/2020</li>
-              <li>Model: Dell Blah 101</li>
-              <li>SomeDetail: Another thing</li>
-              <li>Thing 1: Thing 2</li>
-            </ul>
-        </li>
-        </ion-item>
-      </ul>
+    <ion-item>
+      <ion-label *ngIf="num != ''">{{num}}</ion-label>
+    </ion-item>
+    
+    <ion-item class="card item-text-wrap" style="word-wrap: break-word; word-break: break-all; font-size:smaller">
+      {{scanResult}}
+    </ion-item>
   </ion-list>
+
 </ion-content>
