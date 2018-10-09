@@ -14,12 +14,20 @@
   
   <ion-list>
     <ion-item>
-      <ion-label *ngIf="num != ''">{{num}}</ion-label>
+      <ion-label *ngIf="num != ''">Tag No: {{num}}</ion-label>
     </ion-item>
     
-    <ion-item class="card item-text-wrap" style="word-wrap: break-word; word-break: break-all; font-size:smaller">
-      {{scanResult}}
-    </ion-item>
+    <ion-list>
+    <ul>
+        <ion-item *ngFor="let s of scanResult"  >
+           <li style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
+        </ion-item>
+      </ul>
+      </ion-list>
+      
+
+
+
   </ion-list>
 
 </ion-content>

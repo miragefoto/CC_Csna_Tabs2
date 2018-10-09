@@ -21,7 +21,7 @@ export class LookupPage {
   public num: string;
   public location: string;
   public user: string;
-  public scanResult: string;
+  public scanResult: any;
   //options for scanner
   public options:{};
   
@@ -76,6 +76,10 @@ export class LookupPage {
 
     // new scan method
   scan() {
+
+  //  this.num = 'C70075';
+  //  this.SearchTag(this.num);
+
     try{
 
       this.options = {
@@ -101,6 +105,7 @@ export class LookupPage {
       this.num = 'C70075';
       this.SearchTag(this.num);
     }
+    
   }
 
 
@@ -111,8 +116,9 @@ export class LookupPage {
       .subscribe(res => {
         resolve(res);
         console.log(res);
-        console.log(res["API"]["response"]["operation"]["Details"]["field-values"]["record"]["value"]);
-        this.scanResult =res["API"]["response"]["operation"]["Details"]["field-values"]["record"]["value"];
+        //console.log(res["API"]["response"]["operation"]["Details"]["field-values"]["record"]["value"]);
+        //this.scanResult =res["API"]["response"]["operation"]["Details"]["field-values"]["record"]["value"];
+        this.scanResult = res;
       }, 
       (err) => {
         reject(err);
