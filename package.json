@@ -29,6 +29,7 @@
     "@ionic-native/toast": "^4.15.0",
     "@ionic/pro": "2.0.3",
     "@ionic/storage": "2.2.0",
+    "angular-sanitize": "^1.7.5",
     "cordova": "^8.1.2",
     "cordova-android": "7.1.1",
     "cordova-plugin-android-permissions": "^1.0.0",

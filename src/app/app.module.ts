@@ -23,6 +23,8 @@ import { IonicStorageModule } from '@ionic/storage';
 //Post functions
 import { HttpClientModule  } from '@angular/common/http';
 
+//import { Sanitizer } from 'angular-sanitize';
+
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import { HttpClientModule  } from '@angular/common/http';
   imports: [
     BrowserModule,
     HttpClientModule,
+   // Sanitizer,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp)
   ],

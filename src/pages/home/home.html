@@ -5,11 +5,29 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to the Chatham ICS Scanning App!</h2>
+  <h3 *ngIf="user?.length > 0">Welcome <h2><strong>{{user}}</strong></h2> to the Chatham ICS Scanning App!</h3>
+  <h2 *ngIf="!user?.length">Welcome {{user}} to the Chatham ICS Scanning App!</h2>
   <p>
     This is just a sample project that shows how much better we are than TechFriends
   </p>
-  <p>
-    Take a look at the working and mocked functions and get an idea of the possibilities.
-  </p>
+  
+  <ion-list>
+    <ion-item>
+        <button ion-button class="button button-block icon icon-left ion-home" (click)="GetWorkorders()"  color="secondary" >Get Open Workorders</button>
+    </ion-item>
+    <ul>
+        <ion-item *ngFor="let s of WorkOrders"  >
+           <li style="word-wrap: break-word; word-break: break-all; font-size:smaller">Work Order: {{s.WORKORDERID}} </li>
+           <ul >
+              <li style="word-wrap: break-word; word-break: break-all; font-size:smaller">SUBJECT: {{s.SUBJECT}} </li>
+              <li style="word-wrap: break-word; word-break: break-all; font-size:smaller">REQUESTER: {{s.REQUESTER}} </li>
+              <li style="word-wrap: break-word; word-break: break-all; font-size:smaller">CREATEDTIME: {{s.CREATEDTIME}} </li>
+              <li style="word-wrap: break-word; word-break: break-all; font-size:smaller">PRIORITY: {{s.PRIORITY}} </li>
+              <li><button ion-button data-id={{s.WORKORDERID}} (click)='OpenDetail(s.WORKORDERID)'>Details</button></li>
+           </ul>
+        </ion-item>
+      </ul>
+      </ion-list>
+    
+
 </ion-content>
