@@ -20,7 +20,11 @@
   <ion-list>
     <ul *ngFor="let s of WorkOrder"  >
       
-        <li *ngIf="s.FieldName != 'Description'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
+        <li *ngIf="s.FieldName != 'Description' && s.FieldName != 'Requester Email'&& s.FieldName != 'Creator Email'&& s.FieldName != 'Requester Phone' && s.FieldName != 'Requester Mobile'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
+        <li *ngIf="s.FieldName == 'Requester Email'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <a href="mailto:s.Value" >{{s.Value}}</a></li>
+        <li *ngIf="s.FieldName == 'Creator Email'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <a href="mailto:s.Value" >{{s.Value}}</a></li>
+        <li *ngIf="s.FieldName == 'Requester Phone'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <button ion-button small round outline color="primary" (click)="callNumber(s.Value)">{{s.Value}}</button></li>
+        <li *ngIf="s.FieldName == 'Requester Mobile'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <button ion-button small round outline color="primary" (click)="callNumber(s.Value)">{{s.Value}}</button></li>
       
     </ul>
     Description<br/>

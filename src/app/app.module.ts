@@ -22,6 +22,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 //Post functions
 import { HttpClientModule  } from '@angular/common/http';
+import { CallNumber } from '@ionic-native/call-number';
 
 //import { Sanitizer } from 'angular-sanitize';
 
@@ -56,7 +57,8 @@ import { HttpClientModule  } from '@angular/common/http';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FavoriteProvider,
     BarcodeScanner,
-    Toast
+    Toast,
+    CallNumber
   ]
 })
 export class AppModule {}

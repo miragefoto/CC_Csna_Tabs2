@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Sanitizer } from 'angular-sanitize';
+import { CallNumber } from '@ionic-native/call-number';
 
 /**
  * Generated class for the WoDetailsPage page.
@@ -27,7 +28,8 @@ export class WoDetailsPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
-    private view: ViewController, 
+    private view: ViewController,
+    private callNumber: CallNumber, 
     private http:HttpClient) {
   }
 
@@ -42,7 +44,20 @@ export class WoDetailsPage {
     this.view.dismiss();
   }
 
+CallNumber(num){
+  this.callNumber.isCallSupported()
+  .then(function (response) {
+      if (response == true) {
+        this.callNumber.callNumber(num, true);
+      }
+      else {
+          alert("Calling not reported");
+      }
+  });
 
+
+  
+}
 
 //Get Data
 GetWODetails(){
