@@ -30,13 +30,10 @@ export class HomePage {
   ionViewDidLoad() {
     try{
       if(!this.UserInfo){
-        
         this.favoriteProvider.getUserInfo().then(
           data => {
-            console.log("userInfo from storage: " +JSON.stringify(data));
             if(data){
               this.UserInfo = JSON.parse(data);
-              console.log(this.UserInfo)
               this.apiKey = this.UserInfo["userApi"] || " ";
               this.user = this.UserInfo["username"] ;
               this.techId = this.UserInfo["techId"];
@@ -64,7 +61,6 @@ export class HomePage {
         this.UserInfo = {username :  this.user  , userApi : apiKeyIn  , techId :  this.techId };
         this.favoriteProvider.insertUserInfo(JSON.stringify(this.UserInfo)).then(
           data => {
-            console.log("userinfo inserted");
             this.navCtrl.setRoot(TabsPage);
           }
         )

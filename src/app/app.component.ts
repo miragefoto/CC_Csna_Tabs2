@@ -25,7 +25,6 @@ export class MyApp {
           this.favoriteProvider.getUserInfo().then(
             data => {
               if(data){
-                console.log(data);
                 this.UserInfo = JSON.parse(data);
                 if(!this.UserInfo){
                   this.rootPage = HomePage;
@@ -39,7 +38,6 @@ export class MyApp {
         }
        }
       catch(err){}
-       console.log(this.UserInfo);
       if(!this.UserInfo){
         this.rootPage = HomePage;
       }

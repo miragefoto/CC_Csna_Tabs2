@@ -8,26 +8,43 @@
 
 <ion-content padding>
   <ion-item>
-    <button ion-button class="button button-block icon icon-left ion-home" (click)="scan()"  color="secondary" >Scan for Details </button>
+    <button ion-button class="button button-block icon icon-left ion-home" (click)="scan()" color="secondary">Scan for
+      Details </button>
   </ion-item>
-  <br/>
-  
-  <ion-list>
-    <ion-item>
-      <ion-label *ngIf="num != ''">Tag No: {{num}}</ion-label>
-    </ion-item>
-    
-    <ion-list>
-    <ul>
-        <ion-item *ngFor="let s of scanResult"  >
-           <li style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
-        </ion-item>
-      </ul>
-      </ion-list>
-      
+  <br />
 
+  <ion-item *ngIf="num">
+    <ion-label >Tag No: {{num}}</ion-label>
+  </ion-item>
 
-
+  <ion-list *ngIf="scanResult">
+    <ul *ngFor="let s of scanResult"  >
+        <li style="word-wrap: break-word; font-size:smaller" text-wrap>{{s.FieldName}} : {{s.Value}}</li>
+    </ul>
   </ion-list>
+  <ion-item *ngIf="!scanResult && scanned">
+    <ion-label>No Results Found!</ion-label>
+  </ion-item>
+  <ion-item *ngIf="!scanned">
+      <ion-label>Waiting!</ion-label>
+  </ion-item>
+
+  <!--
+
+<ion-item ion-row class="ion-row" *ngFor="let s of WorkOrders">
+    <li class="bold" >Work Order: {{s.WORKORDERID}} </li>
+    <ul class="item-text-wrap" style="word-wrap: break-word; font-size:smaller" text-wrap>
+      <li>SUBJECT: {{s.SUBJECT}} </li>
+      <li>REQUESTER: {{s.REQUESTER}} </li>
+      <li>CREATED: {{s.CREATEDTIME}}</li>
+      <li>PRIORITY: {{s.PRIORITY}} </li>
+      <li><button ion-button smaller round outline color="primary" data-id={{s.WORKORDERID}} (click)='OpenDetail(s.WORKORDERID)'>Details</button></li>
+    </ul>
+  </ion-item>
+
+  -->
+
+
+
 
 </ion-content>
