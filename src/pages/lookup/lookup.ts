@@ -101,9 +101,6 @@ export class LookupPage {
       
     }
     catch(err){
-      console.log('test');
-      this.num = 'C70075';
-      this.SearchTag(this.num);
     }
     
   }

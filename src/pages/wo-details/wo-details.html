@@ -8,28 +8,78 @@
 
   <ion-navbar>
     <ion-title>WO Details</ion-title>
-  
-  <ion-buttons end>
+
+    <ion-buttons end>
       <button ion-button (click)="CloseMe()">Close</button>
-  </ion-buttons>
-</ion-navbar>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
+  <h4>Details</h4>
   <ion-list>
-    <ul *ngFor="let s of WorkOrder"  >
-      
-        <li *ngIf="s.FieldName != 'Description' && s.FieldName != 'Requester Email'&& s.FieldName != 'Creator Email'&& s.FieldName != 'Requester Phone' && s.FieldName != 'Requester Mobile'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
-        <li *ngIf="s.FieldName == 'Requester Email'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <a href="mailto:s.Value" >{{s.Value}}</a></li>
-        <li *ngIf="s.FieldName == 'Creator Email'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <a href="mailto:s.Value" >{{s.Value}}</a></li>
-        <li *ngIf="s.FieldName == 'Requester Phone'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <button ion-button small round outline color="primary" (click)="callNumber(s.Value)">{{s.Value}}</button></li>
-        <li *ngIf="s.FieldName == 'Requester Mobile'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : <button ion-button small round outline color="primary" (click)="callNumber(s.Value)">{{s.Value}}</button></li>
-      
-    </ul>
-    Description<br/>
-    <div [innerHTML]='Desc'></div> 
-  </ion-list>
-  
-</ion-content>
+    <ul *ngFor="let s of WorkOrder">
 
+      <li *ngIf="s.FieldName != 'Description' && s.FieldName != 'Requester Email'&& s.FieldName != 'Creator Email'&& s.FieldName != 'Requester Phone' && s.FieldName != 'Requester Mobile'"
+        style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
+      <li *ngIf="s.FieldName == 'Requester Email'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}}
+        : <a href="mailto:s.Value">{{s.Value}}</a></li>
+      <li *ngIf="s.FieldName == 'Creator Email'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}}
+        : <a href="mailto:s.Value">{{s.Value}}</a></li>
+      <li *ngIf="s.FieldName == 'Requester Phone'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}}
+        : <button ion-button small round outline color="primary" (click)="CallNumber(s.Value)">{{s.Value}}</button></li>
+      <li *ngIf="s.FieldName == 'Requester Mobile'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}}
+        : <button ion-button small round outline color="primary" (click)="CallNumber(s.Value)">{{s.Value}}</button></li>
+
+    </ul>
+  </ion-list>
+  <h4>Description</h4>
+
+  <div [innerHTML]='Desc'></div>
+
+  <br>
+  <h4>Actions</h4>
+  <ion-list>
+    <a href="#" ion-button small button-block round outline (click)="toggleLog()" ng-hide="showLog"> Add A Work Log</a>
+    <div id="LogDiv" *ngIf="showLog">
+      <ion-item>
+        <ion-label>Hours</ion-label>
+        <ion-input type="text" [(ngModel)]="hoursText"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Minutes</ion-label>
+        <ion-input type="text" [(ngModel)]="minutesText"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Description</ion-label>
+        <ion-input type="text" [(ngModel)]="workDesc"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button small button-block round outline (click)="AddWorkLog()" color="secondary">Add WorkLog</button>
+      </ion-item>
+    </div>
+  </ion-list>
+
+  <br />
+
+  <ion-list>
+    <a href="#" ion-button small button-block round outline (click)="toggleNote()" ng-hide="showLog">Add A Note:</a>
+    <div id="NoteDiv" *ngIf="showNote">
+      <ion-item>
+        <ion-label>Show to requester?</ion-label>
+        <ion-checkbox [(ngModel)]="isPublic"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Note Text</ion-label>
+        <ion-input type="text" [(ngModel)]="note"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button small button-block round outline (click)="AddNote()" color="secondary">Add
+          Note</button>
+      </ion-item>
+    </div>
+  </ion-list>
+
+
+</ion-content>

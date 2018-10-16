@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 
 const STORAGE_KEY = 'scannedItems';
 const USER_KEY = 'UserName';
+const USER_INFO =  "UserInfo";
+const USER_API = "UserApi";
  
 @Injectable()
 export class FavoriteProvider {
@@ -18,11 +20,28 @@ export class FavoriteProvider {
         result.push(scan);
         this.storage.set(STORAGE_KEY, result);
         return this.storage.get(STORAGE_KEY);
-      } else {
-         this.storage.set(STORAGE_KEY, [scan]);
-         return this.storage.get(STORAGE_KEY);
+      } 
+      else {
+        this.storage.set(STORAGE_KEY, [scan]);
+        return this.storage.get(STORAGE_KEY);
       }
     });
+  }
+
+  insertUserInfo(info){
+    return this.storage.set(USER_INFO, info);
+  }
+
+  getUserInfo(){
+    return this.storage.get(USER_INFO);
+  }
+
+  insertUserApi(api){
+    return this.storage.set(USER_API, api);
+  }
+
+  getUserApi(){
+    return this.storage.get(USER_API);
   }
 
   getAllScans() {
@@ -47,6 +66,8 @@ export class FavoriteProvider {
     this.storage.set(USER_KEY, user);
     return this.storage.get(USER_KEY);
   }
+
+  
 
 
 }

@@ -21,7 +21,6 @@ export class ScanPage {
   // store the scanned result
   public num: string;
   public location: string;
-  public user: string;
   public scannedItems: Array<string> = new Array<string>();
 
   //options for scanner
@@ -35,6 +34,8 @@ export class ScanPage {
 
   //Control back button
   public unregisterBackButtonAction: any;
+
+  public UserInfo : {};
 
   // DI barcodeScanner
   constructor(
@@ -51,19 +52,24 @@ export class ScanPage {
   }
 
   ionViewDidLoad() {
-    if(!this.logs){
-      this.logs = "";
-    }
-    //this.logs += '\nionViewDidLoad()\n';          
-    this.initializeBackButtonCustomHandler();
     try{
-      if(this.user == null || this.user == ""){
-        this.favoriteProvider.getUser().then(
-          name => {
-            this.user = name;
+    try{
+      if(!this.UserInfo){
+        this.favoriteProvider.getUserInfo().then(
+          data => {
+            if(data){
+              this.UserInfo = JSON.parse(data);
+            }
           }
-        ) 
+        )
       }
+    }
+    catch(err){
+      console.log('error: ' +JSON.stringify(err));
+    }       
+
+    this.initializeBackButtonCustomHandler();
+  
     if(!this.scannedItems || this.scannedItems.length == 0){
       
       this.favoriteProvider.getAllScans().then(
@@ -89,7 +95,6 @@ export class ScanPage {
 
   initializeBackButtonCustomHandler(): void {
     this.unregisterBackButtonAction = this.platform.registerBackButtonAction(function(event){
-      console.log('Prevent Back Button Page Change');
       try{
         this.barcodeScanner.pop();
       }
@@ -101,10 +106,6 @@ export class ScanPage {
 
   // new scan method
   scan() {
-    if(this.user == null || this.user  == ""){  
-      alert("Select a user first");
-      return false;
-    } 
     this.options = {
       prompt : "Scan the Barcode, back to cancel.",
       preferFrontCamera : false, // iOS and Android
@@ -119,7 +120,7 @@ export class ScanPage {
           if(!data.cancelled){  // NOT CANCELLED
             // this is called when a barcode is found
             this.num = data.text;
-            var thisItem = '{"TagNo":"'+this.num+'", "Location":"'+this.location+'","EditBy":"'+this.user+'","Status":"2"}';
+            var thisItem = '{"TagNo":"'+this.num+'", "Location":"'+this.location+'","EditBy":"'+this.UserInfo["username"]+'","Status":"2"}';
       
             this.favoriteProvider.insertScan(JSON.parse(thisItem))
             this.scannedItems.push(JSON.parse(thisItem));
@@ -171,7 +172,7 @@ export class ScanPage {
 
   //UserName Save
   onChangeUser(){
-    this.favoriteProvider.insertUser(this.user);
+    this.favoriteProvider.insertUser(this.UserInfo["username"]);
   }
 
   //Popups
