@@ -21,7 +21,7 @@
   <ion-list>
     <ul *ngFor="let s of WorkOrder">
 
-      <li *ngIf="s.FieldName != 'Description' && s.FieldName != 'Requester Email'&& s.FieldName != 'Creator Email'&& s.FieldName != 'Requester Phone' && s.FieldName != 'Requester Mobile'"
+      <li *ngIf="s.FieldName != 'Description' && s.FieldName != 'Requester Email'&& s.FieldName != 'Creator Email'&& s.FieldName != 'Requester Phone' && s.FieldName != 'Requester Mobile' && s.FieldType != 'image' && s.FieldType != 'image2'"
         style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
       <li *ngIf="s.FieldName == 'Requester Email'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}}
         : <a href="mailto:s.Value">{{s.Value}}</a></li>
@@ -31,14 +31,18 @@
         : <button ion-button small round outline color="primary" (click)="CallNumber(s.Value)">{{s.Value}}</button></li>
       <li *ngIf="s.FieldName == 'Requester Mobile'" style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}}
         : <button ion-button small round outline color="primary" (click)="CallNumber(s.Value)">{{s.Value}}</button></li>
-
     </ul>
   </ion-list>
   <h4>Description</h4>
-
   <div [innerHTML]='Desc'></div>
 
-  <br>
+  <br/>
+  
+<ion-list *ngFor="let img of pics">
+  <span [innerHTML]="sanitizer.bypassSecurityTrustHtml(img)"></span>
+</ion-list>
+
+  <br/>
   <h4>Actions</h4>
   <ion-list>
     <a href="#" ion-button small button-block round outline (click)="toggleLog()" ng-hide="showLog"> Add A Work Log</a>
@@ -80,6 +84,8 @@
       </ion-item>
     </div>
   </ion-list>
+<br/>
 
 
 </ion-content>
+

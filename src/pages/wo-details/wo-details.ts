@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { HttpClient, HttpHeaders    } from '@angular/common/http';
-import { Sanitizer } from 'angular-sanitize';
+//import { Sanitizer } from 'angular-sanitize';
 import { CallNumber } from '@ionic-native/call-number';
-import {RequestOptions } from '@angular/http';
+import { RequestOptions } from '@angular/http';
 import { FavoriteProvider } from './../../providers/favorite/favorite';
+//import {SafePipe } from '../../app/SafePipe';
 //import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise'
-
+import { NgModel } from '@angular/forms';
+import { DomSanitizer, SafeHtml} from '@angular/platform-browser';
 /**
  * Generated class for the WoDetailsPage page.
  *
@@ -18,16 +20,14 @@ import 'rxjs/add/operator/toPromise'
 
 
 const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/";
-const apiUrlSingle = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/GetWorkorderDetails?WO=";
-const apiUrlAddNote = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/AddNote";
-const apiUrlAddWorkLog  = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/AddWorkLog";
-
 
 @IonicPage()
 @Component({
   selector: 'page-wo-details',
   templateUrl: 'wo-details.html',
 })
+
+
 export class WoDetailsPage {
 
   private WorkOrder : any;
@@ -40,38 +40,27 @@ export class WoDetailsPage {
   public showLog : boolean = false;
   public showNote : boolean = false;
   public isPublic : boolean = false;
+  public pics : Array<SafeHtml> = new Array<SafeHtml>();
   
   public UserInfo : {};
-
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
     private view: ViewController,
     private callNumber: CallNumber, 
+    public sanitizer : DomSanitizer,
     private favoriteProvider : FavoriteProvider,
     private http:HttpClient) {
   }
 
-  ionViewDidLoad() {
-    // try{
-    //   if(!this.UserInfo){
-    //     this.favoriteProvider.getUserInfo().then(
-    //       data => {
-    //         if(data){
-    //           this.UserInfo = JSON.parse(data);
-    //         }
-    //       }
-    //     ) 
-    //   }
-    // }
-    // catch(err){
-    //   console.log('error: ' +JSON.stringify(err));
-    // }
+ 
 
-    console.log(this.navParams.get('data'));
+  ionViewDidLoad() {
+
+    //console.log(this.navParams.get('data'));
     this.WO = this.navParams.get('data')
     this.UserInfo = this.navParams.get('UserInfo')
-    console.log(this.UserInfo);
+    //console.log(this.UserInfo);
     this.GetWODetails();
   }
 
@@ -143,16 +132,40 @@ GetWODetails(){
     this.http.get(apiBase+"GetWorkorderDetails?WO="+this.WO+"&api="+this.UserInfo["userApi"] )
     .subscribe(res => {
       resolve(res);
-      console.log(res);
+      
       this.WorkOrder = res;
-      this.Desc = (res)[3]["Value"];
-      console.log(this.Desc);
+      //console.log("WO: " +this.WorkOrder);
+      for (var i = 0; i < 100; i++) { 
+        try{
+          if( res[i]["FieldName"] == "Description"){
+            this.Desc = res[i]["Value"];
+            //console.log(this.Desc);
+           // break;
+          }
+          if( res[i]["FieldType"] == "image2"){
+            let img = res[i]["Value"];
+            this.pics.push('<img src="'+ img + '" />');
+          }
+        }
+        catch(err){
+          //console.log(err);
+          break;
+        }
+      }
+
     }, 
     (err) => {
       reject(err);
     });
   });
 }
+
+showImage(img){
+  const sanitizedContent = this.sanitizer.bypassSecurityTrustUrl(img);
+  return sanitizedContent;
+}
+
+
 
 
   toggleLog(){
@@ -171,45 +184,6 @@ GetWODetails(){
       this.showNote = true;
     }
   }
-
- /*
-try{
-  let headers = new HttpHeaders(
-    {
-      'content-type' : 'application/json'
-    });
-    
-    let data = {
-      'Note' : this.note,
-      'isPublic' : "false",
-      'Request' : this.WO
-        };
-    console.log(data);
-    return new Promise((resolve, reject) => {
-      this.http.post(apiUrlAddNote+ "Json", data,{headers:headers})
-      .toPromise()
-      .then((response) =>
-      {
-        console.log('API Response : ', response);
-        resolve(response);
-      })
-      .catch((error) =>
-      {
-        try{
-        console.error('API Error : ', error.status);
-        
-        console.error('API Error : ', JSON.stringify(error));
-        reject(error());
-      }
-      catch(err){}
-      });
-    });
-
-  }
-  catch(err){
-
- 
-*/
 
 
 }

@@ -24,9 +24,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule  } from '@angular/common/http';
 import { CallNumber } from '@ionic-native/call-number';
 
-//import { Sanitizer } from 'angular-sanitize';
-
-
 
 @NgModule({
   declarations: [
@@ -39,7 +36,6 @@ import { CallNumber } from '@ionic-native/call-number';
   imports: [
     BrowserModule,
     HttpClientModule,
-   // Sanitizer,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp)
   ],
