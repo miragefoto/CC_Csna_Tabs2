@@ -24,7 +24,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule  } from '@angular/common/http';
 import { CallNumber } from '@ionic-native/call-number';
 
-
 @NgModule({
   declarations: [
     MyApp,
@@ -55,6 +54,7 @@ import { CallNumber } from '@ionic-native/call-number';
     BarcodeScanner,
     Toast,
     CallNumber
+    
   ]
 })
 export class AppModule {}

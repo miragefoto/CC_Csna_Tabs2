@@ -40,6 +40,7 @@ export class WoDetailsPage {
   public showLog : boolean = false;
   public showNote : boolean = false;
   public isPublic : boolean = false;
+  public ShowDetail : boolean = true;
   public pics : Array<SafeHtml> = new Array<SafeHtml>();
   
   public UserInfo : {};
@@ -91,13 +92,12 @@ CallNumber(num: string){
 AddNote(){
 
   let data1 = "isPublic="+this.isPublic+"&noteText="+this.note+"&Request="+this.WO+"&api="+this.UserInfo["userApi"] ;
-  console.log(data1);
-  console.log(encodeURI(data1));
+  
   this.http.get(apiBase+"AddNote?"+encodeURI(data1))
    .subscribe(res => {
      this.note = "";
      this.isPublic = false;
-     this.showNote = false;
+     this.toggleNote();
      alert("Completed")
    }, error => {
      console.log(error);
@@ -105,17 +105,29 @@ AddNote(){
 }
 
 AddWorkLog(){
-  let data1 = "Hours=" + this.hoursText + "&Minutes=" + this.minutesText + "&Description="+ this.workDesc + "&Owner=" + this.UserInfo["username"] + "&Request=" +this.WO+"&api="+this.UserInfo["userApi"] ;
-  console.log(data1);
-  return new Promise((resolve, reject) => {
+//Error Check
+if(!this.workDesc){
+  alert("Description is required");
+  return;
+}
+  let hours = "0";
+  let min = "0";
+  if(this.hoursText){
+    hours = this.hoursText;
+  }
+  if(this.minutesText){
+    min = this.minutesText;
+  }
+  let data1 = "Hours=" + hours  + "&Minutes=" + min + "&Description="+ this.workDesc + "&Owner=" + this.UserInfo["username"] + "&Request=" +this.WO+"&api="+this.UserInfo["userApi"] ;
+    return new Promise((resolve, reject) => {
     this.http.get(apiBase+"AddWorkLog?"+encodeURI(data1))
       .subscribe(res => {
         resolve(res);
-        console.log(res);
+  
         this.hoursText = "";
         this.minutesText = "";
         this.workDesc = "";
-        this.showLog = false;
+        this.toggleLog();
         alert("Completed")
       }, 
       (err) => {
@@ -134,13 +146,10 @@ GetWODetails(){
       resolve(res);
       
       this.WorkOrder = res;
-      //console.log("WO: " +this.WorkOrder);
       for (var i = 0; i < 100; i++) { 
         try{
           if( res[i]["FieldName"] == "Description"){
             this.Desc = res[i]["Value"];
-            //console.log(this.Desc);
-           // break;
           }
           if( res[i]["FieldType"] == "image2"){
             let img = res[i]["Value"];
@@ -148,7 +157,6 @@ GetWODetails(){
           }
         }
         catch(err){
-          //console.log(err);
           break;
         }
       }
@@ -171,19 +179,25 @@ showImage(img){
   toggleLog(){
     if(this.showLog == true){
       this.showLog = false;
+      this.ShowDetail = true;
     }
     else{
       this.showLog = true;
+      this.ShowDetail = false;
     }
+
   }
   toggleNote(){
     if(this.showNote  == true){
       this.showNote = false;
+      this.ShowDetail = true;
     }
     else{
       this.showNote = true;
+      this.ShowDetail = false;
     }
   }
+
 
 
 }

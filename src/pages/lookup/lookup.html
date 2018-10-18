@@ -16,12 +16,15 @@
   <ion-item *ngIf="num">
     <ion-label >Tag No: {{num}}</ion-label>
   </ion-item>
-
-  <ion-list *ngIf="scanResult">
+<div *ngIf="scanResult">
+  <ion-list>
     <ul *ngFor="let s of scanResult"  >
         <li style="word-wrap: break-word; font-size:smaller" text-wrap>{{s.FieldName}} : {{s.Value}}</li>
     </ul>
   </ion-list>
+</div>
+
+
   <ion-item *ngIf="!scanResult && scanned">
     <ion-label>No Results Found!</ion-label>
   </ion-item>

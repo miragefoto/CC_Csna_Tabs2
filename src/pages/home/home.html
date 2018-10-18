@@ -26,20 +26,31 @@
   </div>
 
   <ion-item *ngIf="UserInfo">
-    <button ion-button class="button button-block icon icon-left ion-home" (click)="GetWorkorders()" color="secondary">Get
-      Open Workorders</button>
+    <button ion-button class="button button-block icon icon-left ion-home" (click)="GetWorkorders()" color="secondary">Get Open Workorders</button>
   </ion-item>
 
-  <ion-item ion-row class="ion-row" *ngFor="let s of WorkOrders">
-    <li class="bold" >Work Order: {{s.WORKORDERID}} </li>
-    <ul class="item-text-wrap" style="word-wrap: break-word; font-size:smaller" text-wrap>
-      <li>SUBJECT: {{s.SUBJECT}} </li>
-      <li>REQUESTER: {{s.REQUESTER}} </li>
-      <li>CREATED: {{s.CREATEDTIME}}</li>
-      <li>PRIORITY: {{s.PRIORITY}} </li>
-      <li><button ion-button smaller round outline color="primary" data-id={{s.WORKORDERID}} (click)='OpenDetail(s.WORKORDERID)'>Details</button></li>
+  <ion-list *ngFor="let w of WorkOrders ">
+    <ion-grid>
+      <ion-row>
+          <ion-col col-8><strong> {{w.DEPARTMENT}}</strong> : {{w.WORKORDERID}}:</ion-col>
+          <ion-col col-4 small><button ion-button icon-only small  data-id={{w.WORKORDERID}} (click)='OpenDetail(w.WORKORDERID)'><ion-icon name="md-construct"></ion-icon></button></ion-col>
+          
+      </ion-row>
+    </ion-grid>
+    <ul *ngFor="let s of w.baseInfo" >
+      <li *ngIf="s.FieldName != 'Requester Email'&& s.FieldName != 'Requester Phone' && s.FieldName != 'Requester Mobile' && s.FieldName != 'WORKORDERID'"
+        style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
+      <li *ngIf="s.FieldName == 'Requester Email'" style="word-wrap: break-word; font-size:smaller">{{s.FieldName}}
+        : <a href="mailto:s.Value">{{s.Value}}</a></li>
+      <li *ngIf="s.FieldName == 'Requester Phone'" style="word-wrap: break-word; font-size:smaller">{{s.FieldName}}
+        : <button ion-button small round outline color="primary" (click)="CallNumber(s.Value)">{{s.Value}}</button></li>
+      <li *ngIf="s.FieldName == 'Requester Mobile'" style="word-wrap: break-word;  font-size:smaller">{{s.FieldName}}
+        : <button ion-button small round outline color="primary" (click)="CallNumber(s.Value)">{{s.Value}}</button></li>
+        <li *ngIf="s.FieldName == 'Requester Mobile'" style="word-wrap: break-word;  font-size:smaller">{{s.FieldName}}
+          : <button ion-button smaller round outline color="primary" data-id={{s.Value}} (click)="OpenDetail(s.Value)">Details</button></li>
     </ul>
-  </ion-item>
+    <hr/>
+  </ion-list>
 
 
 

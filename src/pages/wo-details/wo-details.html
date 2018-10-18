@@ -17,6 +17,7 @@
 
 
 <ion-content padding>
+  <div *ngIf="ShowDetail">
   <h4>Details</h4>
   <ion-list>
     <ul *ngFor="let s of WorkOrder">
@@ -44,6 +45,8 @@
 
   <br/>
   <h4>Actions</h4>
+</div>
+
   <ion-list>
     <a href="#" ion-button small button-block round outline (click)="toggleLog()" ng-hide="showLog"> Add A Work Log</a>
     <div id="LogDiv" *ngIf="showLog">
