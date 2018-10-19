@@ -89,6 +89,24 @@
   </ion-list>
 <br/>
 
+<ion-list>
+    <a href="#" ion-button small button-block round outline (click)="toggleClose()" ng-hide="showClose">Close Work Order:</a>
+    <div id="CloseDiv" *ngIf="showClose">
+      <ion-item>
+        <ion-label>Add default 15 minute worklog?</ion-label>
+        <ion-checkbox [(ngModel)]="AddTime"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Close Notes</ion-label>
+        <ion-input type="text" [(ngModel)]="closeNote"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button small button-block round outline (click)="CloseWO()" color="secondary">Close This Workorder</button>
+      </ion-item>
+    </div>
+  </ion-list>
+<br/>
+
 
 </ion-content>
 

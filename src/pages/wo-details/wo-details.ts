@@ -37,9 +37,12 @@ export class WoDetailsPage {
   public workDesc : string;
   public hoursText : string;
   public minutesText : string;
+  public closeNote : string;
   public showLog : boolean = false;
   public showNote : boolean = false;
+  public showClose : boolean = false;
   public isPublic : boolean = false;
+  public addTime : boolean = false;
   public ShowDetail : boolean = true;
   public pics : Array<SafeHtml> = new Array<SafeHtml>();
   
@@ -176,26 +179,62 @@ showImage(img){
 
 
 
-  toggleLog(){
+  toggleLog(){ //Close the Tab
     if(this.showLog == true){
-      this.showLog = false;
       this.ShowDetail = true;
+      this.showLog = false;
     }
-    else{
+    else{//Open Tab
       this.showLog = true;
       this.ShowDetail = false;
     }
-
+    this.showNote = false;
+    this.showClose == false;
   }
-  toggleNote(){
+
+  toggleNote(){//Close Tab
     if(this.showNote  == true){
-      this.showNote = false;
       this.ShowDetail = true;
+      this.showNote = false;
     }
-    else{
+    else{//Open Tab
       this.showNote = true;
       this.ShowDetail = false;
     }
+    this.showClose == false;
+    this.showLog = false;
+  }
+  toggleClose(){// Close Tab
+    if(this.showClose  == true){
+      this.ShowDetail = true;
+      this.showClose=false;
+    }
+    else{ //Open Tab = true;
+      this.showClose = true;
+      this.ShowDetail = false;
+    }
+    this.showNote = false;
+    this.showLog = false;
+  }
+
+  CloseWO(){
+
+    var data ="Request=" + this.WO + "&tech=" +this.UserInfo["userApi"] + "&AddTime="+ this.addTime + "&CloseComments=" + this.closeNote + "&techName="+this.UserInfo["username"];
+    
+    return new Promise((resolve, reject) => {
+    this.http.get(apiBase+"CloseWO?"+data,)
+      .subscribe(res => {
+        resolve(res);
+        this.toggleClose();
+        
+        alert("Completed")
+      }, 
+      (err) => {
+      reject(err);
+      console.log(err);
+      });
+  });
+
   }
 
 

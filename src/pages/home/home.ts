@@ -82,12 +82,14 @@ export class HomePage {
 
   GetWorkorders(){
     //Prod
-    //this.GetWO();
+   this.GetWO();
 
+   /*
     //Dev
     this.WorkOrders = [{"WORKORDERID":"12418","DEPARTMENT":"N/A","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12418"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Eric Phillips"},{"FieldName":"Department","FieldType":"string","Value":"Indigent Defense"},{"FieldName":"Job Title","FieldType":"string","Value":"Administrative Assistant II"},{"FieldName":"Requestor Email","FieldType":"string","Value":"slswavely@chathamcounty.org"}]},{"WORKORDERID":"12418","DEPARTMENT":"ICS","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]},{"WORKORDERID":"124418","DEPARTMENT":"ICS","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]},{"WORKORDERID":"124128","DEPARTMENT":"JOMS","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]},{"WORKORDERID":"123418","DEPARTMENT":"BOB","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]}];
-    this.WorkOrders =  this.sortByProperty(this.WorkOrders,'DEPARTMENT')
+    //this.WorkOrders =  this.sortByProperty(this.WorkOrders,'DEPARTMENT')
     return this.WorkOrders;
+    */
   }
 
    //Post Data
@@ -97,7 +99,7 @@ export class HomePage {
       .subscribe(res => {
         resolve(res);
         this.WorkOrders = res;
-        this.sortByProperty(this.WorkOrders,'DEPARTMENT')
+        //this.sortByProperty(this.WorkOrders,'DEPARTMENT')
 
       }, 
       (err) => {
@@ -106,26 +108,6 @@ export class HomePage {
     });
   }
 
-  sortByProperty(objArray, prop){
-    if (arguments.length<2) throw new Error("ARRAY, AND OBJECT PROPERTY MINIMUM ARGUMENTS");
-    if (!Array.isArray(objArray)) throw new Error("FIRST ARGUMENT NOT AN ARRAY");
-    const clone = objArray.slice(0);
-    const direct = arguments.length>2 ? arguments[2] : 1; //Default to ascending
-    const propPath = (prop.constructor===Array) ? prop : prop.split(".");
-    clone.sort(function(a,b){
-        for (let p in propPath){
-                if (a[propPath[p]] && b[propPath[p]]){
-                    a = a[propPath[p]];
-                    b = b[propPath[p]];
-                }
-        }
-        // convert numeric strings to integers
-        a = a.match(/^\d+$/) ? +a : a;
-        b = b.match(/^\d+$/) ? +b : b;
-        return ( (a < b) ? -1*direct : ((a > b) ? 1*direct : 0) );
-    });
-    return clone;
-  }
   
   
 
