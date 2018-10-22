@@ -142,21 +142,28 @@ if(!this.workDesc){
 
 //Get Data
 GetWODetails(){
-  console.log(apiBase+"GetWorkorderDetails?WO="+this.WO+"&api="+this.UserInfo["userApi"]);
+  console.log("GetDetails Fired");
   return new Promise((resolve, reject) => {
     this.http.get(apiBase+"GetWorkorderDetails?WO="+this.WO+"&api="+this.UserInfo["userApi"] )
     .subscribe(res => {
       resolve(res);
-      
       this.WorkOrder = res;
+      console.log('Get Details Result');
       for (var i = 0; i < 100; i++) { 
         try{
           if( res[i]["FieldName"] == "Description"){
             this.Desc = res[i]["Value"];
           }
+          console.log('If 1 done');
           if( res[i]["FieldType"] == "image2"){
             let img = res[i]["Value"];
             this.pics.push('<img src="'+ img + '" />');
+          }
+          console.log('If 2 done');
+          if( res[i]["FieldName"].Contains('Email')){
+            let em = res[i]["Value"];
+            res[i]["Value"] = this.sanitizer.bypassSecurityTrustUrl("mailTo:"+em+ "TESTME");
+            console.log(res[i]["Value"]);
           }
         }
         catch(err){
@@ -170,6 +177,18 @@ GetWODetails(){
     });
   });
 }
+
+
+GetEmail(em,id){
+  try{
+    return "<a href='mailTo:" + em + "?subject=Workorder: "+ id+"'  >"+ em + "</a>"
+  }
+  catch{
+    return em
+  }
+}
+
+
 
 showImage(img){
   const sanitizedContent = this.sanitizer.bypassSecurityTrustUrl(img);

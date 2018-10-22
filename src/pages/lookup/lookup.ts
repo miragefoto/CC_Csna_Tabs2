@@ -22,9 +22,12 @@ export class LookupPage {
   public location: string;
   public UserInfo: {};
   public scanResult: any;
-  public scanned : boolean = false;
+  public scanned: boolean = false;
   //options for scanner
   public options: {};
+  public users: any;
+  public newUser: string;
+  public newDepartment: string;
 
   //Control back button
   public unregisterBackButtonAction: any;
@@ -50,6 +53,7 @@ export class LookupPage {
           data => {
             if (data) {
               this.UserInfo = JSON.parse(data);
+              this.GetUsers();
             }
           }
         )
@@ -80,6 +84,12 @@ export class LookupPage {
 
   // new scan method
   scan() {
+
+    //Dev
+    //this.SearchTag("C70075");
+
+    //Prod
+
     this.scanned = true;
     try {
       this.options = {
@@ -95,7 +105,7 @@ export class LookupPage {
         if (!data.cancelled) {  // NOT CANCELLED
           // this is called when a barcode is found
           this.num = "Searching";
-          
+
           this.SearchTag(data.text);
         }
       });
@@ -103,7 +113,6 @@ export class LookupPage {
     }
     catch (err) {
     }
-
   }
 
   //Post Data
@@ -113,13 +122,24 @@ export class LookupPage {
       this.http.get(apiBase + "GetScanDetails?scan=" + data + "&api=" + this.UserInfo["userApi"])
         .subscribe(res => {
           resolve(res);
-          if(res["Error"]){
+          if (res["Error"]) {
             this.scanResult = null;
-            
+
           }
-          else{
-          this.scanResult = res;
-          
+          else {
+            this.scanResult = res;
+            try {
+              this.scanResult.forEach(element => {
+                if (element["FieldName"] == "Department") {
+                  this.newDepartment = element["Value"];
+                }
+                if (element["FieldName"] == "User") {
+                  this.newUser = element["Value"];
+                }
+
+              });
+            } catch (err) { }
+
           }
           this.num = data;
         },
@@ -129,8 +149,48 @@ export class LookupPage {
     });
   }
 
+  //Get Userlist
+  GetUsers() {
+    return new Promise((resolve, reject) => {
+      this.http.get(apiBase + "GetAllRequesters?api=" + this.UserInfo["userApi"])
+        .subscribe(res => {
+          resolve(res);
+          if (res["Error"]) {
+            this.users = null;
+          }
+          else {
+
+          //  console.log(res);
+            this.users = res;
+            this.users.push("Eric Phillips");
+          }
+        },
+          (err) => {
+            reject(err);
+          });
+    });
+  }
 
 
+
+Reassign(){
+  console.log("values: asser = "+this.num+" , newUser= "+this.newUser);
+  return new Promise((resolve, reject) => {
+    this.http.get(apiBase + "Reassign?asset="+ this.num + "&tech=" + this.UserInfo["userApi"] + "&newUser="+ this.newUser)
+      .subscribe(res => {
+        resolve(res);
+        if (res["Error"]) {
+        }
+        else {
+            alert(JSON.stringify(res));
+            this.SearchTag(this.num);
+        }
+      },
+        (err) => {
+          reject(err);
+        });
+  });
+}
 
 
 

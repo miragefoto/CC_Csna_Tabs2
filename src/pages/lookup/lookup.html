@@ -22,6 +22,22 @@
         <li style="word-wrap: break-word; font-size:smaller" text-wrap>{{s.FieldName}} : {{s.Value}}</li>
     </ul>
   </ion-list>
+ 
+</div>
+<div>
+  Update Assigned User / Department<br/>
+  <ion-list>
+    <ion-item>
+      <ion-label>New User</ion-label>
+      <ion-select [(ngModel)]="newUser"  >
+        <ion-option *ngFor="let s of users" value={{s}} >{{s}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button smaller round outline color="primary" (click)="Reassign()">Reassign</button>
+    </ion-item>
+  </ion-list>
 </div>
 
 

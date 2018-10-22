@@ -109,7 +109,14 @@ export class HomePage {
   }
 
   
-  
+  GetEmail(em, id){
+    try{
+      return "<a href='mailTo:" + em + "?subject=Workorder: "+ id+"'  >"+ em + "</a>"
+    }
+    catch{
+      return em
+    }
+  }
 
 
 
