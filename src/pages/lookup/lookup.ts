@@ -85,33 +85,40 @@ export class LookupPage {
   // new scan method
   scan() {
 
-    //Dev
-    //this.SearchTag("C70075");
-
-    //Prod
-
-    this.scanned = true;
-    try {
-      this.options = {
-        prompt: "Scan the Barcode, back to cancel.",
-        preferFrontCamera: false, // iOS and Android
-        showFlipCameraButton: false, // iOS and Android
-        showTorchButton: true, // iOS and Android
-        orientation: "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
-      }
-
-      //Get result of scan
-      this.barcodeScanner.scan(this.options).then(data => {
-        if (!data.cancelled) {  // NOT CANCELLED
-          // this is called when a barcode is found
-          this.num = "Searching";
-
-          this.SearchTag(data.text);
-        }
-      });
-
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      // This will only print when running on desktop
+      console.log("I'm a regular browser!, fake a scan of C70075");
+      this.SearchTag("C70075");
     }
-    catch (err) {
+    else {
+
+
+
+      //Prod
+
+      this.scanned = true;
+      try {
+        this.options = {
+          prompt: "Scan the Barcode, back to cancel.",
+          preferFrontCamera: false, // iOS and Android
+          showFlipCameraButton: false, // iOS and Android
+          showTorchButton: true, // iOS and Android
+          orientation: "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
+        }
+
+        //Get result of scan
+        this.barcodeScanner.scan(this.options).then(data => {
+          if (!data.cancelled) {  // NOT CANCELLED
+            // this is called when a barcode is found
+            this.num = "Searching";
+
+            this.SearchTag(data.text);
+          }
+        });
+
+      }
+      catch (err) {
+      }
     }
   }
 
@@ -160,9 +167,8 @@ export class LookupPage {
           }
           else {
 
-          //  console.log(res);
+            //  console.log(res);
             this.users = res;
-            this.users.push("Eric Phillips");
           }
         },
           (err) => {
@@ -173,24 +179,24 @@ export class LookupPage {
 
 
 
-Reassign(){
-  console.log("values: asser = "+this.num+" , newUser= "+this.newUser);
-  return new Promise((resolve, reject) => {
-    this.http.get(apiBase + "Reassign?asset="+ this.num + "&tech=" + this.UserInfo["userApi"] + "&newUser="+ this.newUser)
-      .subscribe(res => {
-        resolve(res);
-        if (res["Error"]) {
-        }
-        else {
+  Reassign() {
+    console.log("values: asser = " + this.num + " , newUser= " + this.newUser);
+    return new Promise((resolve, reject) => {
+      this.http.get(apiBase + "Reassign?asset=" + this.num + "&tech=" + this.UserInfo["userApi"] + "&newUser=" + this.newUser)
+        .subscribe(res => {
+          resolve(res);
+          if (res["Error"]) {
+          }
+          else {
             alert(JSON.stringify(res));
             this.SearchTag(this.num);
-        }
-      },
-        (err) => {
-          reject(err);
-        });
-  });
-}
+          }
+        },
+          (err) => {
+            reject(err);
+          });
+    });
+  }
 
 
 
