@@ -24,6 +24,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule  } from '@angular/common/http';
 import { CallNumber } from '@ionic-native/call-number';
 
+import { IonicSelectableModule } from 'ionic-selectable';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -35,8 +37,10 @@ import { CallNumber } from '@ionic-native/call-number';
   imports: [
     BrowserModule,
     HttpClientModule,
+    IonicSelectableModule,
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp)
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [

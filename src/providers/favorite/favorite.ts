@@ -7,6 +7,7 @@ const STORAGE_KEY = 'scannedItems';
 const USER_KEY = 'UserName';
 const USER_INFO =  "UserInfo";
 const USER_API = "UserApi";
+const All_USER_LIST = "AllUserList";
  
 @Injectable()
 export class FavoriteProvider {
@@ -36,12 +37,10 @@ export class FavoriteProvider {
     return this.storage.get(USER_INFO);
   }
 
-  insertUserApi(api){
-    return this.storage.set(USER_API, api);
-  }
-
-  getUserApi(){
-    return this.storage.get(USER_API);
+  clearUserInfo(){
+    this.storage.remove(USER_INFO);
+    this.storage.set(USER_INFO, []);
+    return this.storage.get(USER_INFO);
   }
 
   getAllScans() {
@@ -67,6 +66,13 @@ export class FavoriteProvider {
     return this.storage.get(USER_KEY);
   }
 
+  insertAllUserList(allUsers){
+    this.storage.set(All_USER_LIST, allUsers);
+  }
+
+  getAllUsersList() {
+    return this.storage.get(All_USER_LIST);
+  }
   
 
 

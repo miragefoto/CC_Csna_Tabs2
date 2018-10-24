@@ -21,12 +21,11 @@
   <h4>Details</h4>
   <ion-list>
     <ul *ngFor="let s of WorkOrder">
-
       
       <li *ngIf="s.FieldName != 'Description' && s.FieldName != 'Requester Email'&& s.FieldName != 'Creator Email'&& s.FieldName != 'Requester Phone' && s.FieldName != 'Requester Mobile' && s.FieldType != 'image' && s.FieldType != 'image2'"
         style="word-wrap: break-word; word-break: break-all; font-size:smaller">{{s.FieldName}} : {{s.Value}}</li>
       <li *ngIf="s.FieldName == 'Requester Email'" style="word-wrap: break-word; font-size:smaller">{{s.FieldName}}
-          :  <span [innerHTML]="GetEmail(s.Value, WO)"></span></li>
+          : <span [innerHTML]="GetEmail(s.Value, WO)"></span></li>
       <li *ngIf="s.FieldName == 'Creator Email'" style="word-wrap: break-word;  font-size:smaller">{{s.FieldName}}
           :  <span [innerHTML]="GetEmail(s.Value, WO)"></span></li>
       <li *ngIf="s.FieldName == 'Requester Phone'" style="word-wrap: break-word;  font-size:smaller">{{s.FieldName}}

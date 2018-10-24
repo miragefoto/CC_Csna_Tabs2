@@ -1,11 +1,12 @@
 import { Component, Pipe } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, LoadingController } from 'ionic-angular';
 //Add storage access
 import { FavoriteProvider } from './../../providers/favorite/favorite';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {TabsPage} from '../tabs/tabs'
+import { TabsPage } from '../tabs/tabs'
 
 const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/";
+const msInDay = 86400000;
 
 @Component({
   selector: 'page-home',
@@ -14,110 +15,194 @@ const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefee
 export class HomePage {
 
   public user: string;
-  public apiKey : string;
-  public techId :string;
+  public apiKey: string;
+  public techId: string;
   public WorkOrders: any;
-  public UserInfo : {} ;
+  public UserInfo: {};
+  public loading: any;
+  
 
   constructor(
     public navCtrl: NavController,
-    public http : HttpClient,
+    public http: HttpClient,
     public modal: ModalController,
-    public favoriteProvider : FavoriteProvider){
-    }
+    public loadingController: LoadingController,
+    public favoriteProvider: FavoriteProvider) {
+      this.CheckForUser();
+  }
 
   ionViewDidLoad() {
-    try{
-      if(!this.UserInfo){
+  }
+
+  CheckForUser(){
+    try {
+      if (!this.UserInfo) {
         this.favoriteProvider.getUserInfo().then(
           data => {
-            if(data){
+            if (data) {
               this.UserInfo = JSON.parse(data);
               this.apiKey = this.UserInfo["userApi"] || " ";
-              this.user = this.UserInfo["username"] ;
+              this.user = this.UserInfo["username"];
               this.techId = this.UserInfo["techId"];
-              this.UserInfo = {username :  this.user , userApi :  this.apiKey  , techId :  this.techId };
-              console.log(JSON.stringify(this.UserInfo));
+              this.UserInfo = { username: this.user, userApi: this.apiKey, techId: this.techId };
+              this.GetUsers();
             }
           }
         )
       }
-     }
-    catch(err){
-      console.log('error: ' +JSON.stringify(err));
     }
-
+    catch (err) {
+      console.log('error: ' + JSON.stringify(err));
+    }
   }
 
-  SaveApi(apiKeyIn: string){
+  //Loader Code
+  CreateLoader(source: string) {
+    //console.log("Loader source: " + source);
+    if (this.loading) {
+      //this.loading.dismiss();
+      //this.loading = null;
+    }
+    else {
+      this.loading = this.loadingController.create({
+        dismissOnPageChange: true,
+        content: "Processing...",
+        duration: 15000,
+        spinner: "bubbles"
+
+      });
+      this.loading.present();
+    }
+  }
+
+  DismissLoader() {
+    if (this.loading) {
+      this.loading.dismiss();
+      this.loading = null;
+    }
+  }
+  //END Loader Code
+
+  //Save the API key to local storage
+  SaveApi(apiKeyIn: string) {
+    this.CreateLoader("SaveApi");
     this.apiKey = this.apiKey.trim();
     return new Promise((resolve, reject) => {
-      this.http.get(apiBase + "GetTechInfo?api="+ apiKeyIn)
-      .subscribe(res => {
-        resolve(res);
-        this.apiKey = apiKeyIn;
-        this.user = res["parameters"][1]["value"];
-        this.techId = res["parameters"][0]["value"];
-        this.UserInfo = {username :  this.user  , userApi : apiKeyIn  , techId :  this.techId };
-        this.favoriteProvider.insertUserInfo(JSON.stringify(this.UserInfo)).then(
-          data => {
-            this.navCtrl.setRoot(TabsPage);
+      this.http.get(apiBase + "GetTechInfo?api=" + apiKeyIn)
+        .subscribe(
+          res => {
+            resolve(res);
+            this.apiKey = apiKeyIn;
+            this.user = res["parameters"][1]["value"];
+            this.techId = res["parameters"][0]["value"];
+            this.UserInfo = { username: this.user, userApi: apiKeyIn, techId: this.techId };
+            this.favoriteProvider.insertUserInfo(JSON.stringify(this.UserInfo)).then(
+              data => {
+                this.navCtrl.setRoot(TabsPage);
+              }
+            )
+          },
+          (err) => {
+            reject(err);
+          },
+          () => {
+            this.DismissLoader();
           }
-        )
-      }, 
-      (err) => {
-        reject(err);
-      });
+        );
     });
   }
 
-
-  OpenDetail(id : string){
-    const modalData : string = id
-    const modalUser : {} = this.UserInfo;
-    const detailModal = this.modal.create('WoDetailsPage',{data : modalData, UserInfo : modalUser});
+  OpenDetail(id: string) {
+    const modalData: string = id
+    const modalUser: {} = this.UserInfo;
+    const detailModal = this.modal.create('WoDetailsPage', { data: modalData, UserInfo: modalUser });
     detailModal.present();
   }
 
 
-  GetWorkorders(){
+  GetWorkorders() {
     //Prod
-   this.GetWO();
-
-   /*
-    //Dev
-    this.WorkOrders = [{"WORKORDERID":"12418","DEPARTMENT":"N/A","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12418"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Eric Phillips"},{"FieldName":"Department","FieldType":"string","Value":"Indigent Defense"},{"FieldName":"Job Title","FieldType":"string","Value":"Administrative Assistant II"},{"FieldName":"Requestor Email","FieldType":"string","Value":"slswavely@chathamcounty.org"}]},{"WORKORDERID":"12418","DEPARTMENT":"ICS","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]},{"WORKORDERID":"124418","DEPARTMENT":"ICS","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]},{"WORKORDERID":"124128","DEPARTMENT":"JOMS","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]},{"WORKORDERID":"123418","DEPARTMENT":"BOB","baseInfo":[{"FieldName":"SUBJECT","FieldType":"string","Value":"Reduce button clicks to increase productivity"},{"FieldName":"REQUESTER","FieldType":"string","Value":"Sandra Swavely"},{"FieldName":"WORKORDERID","FieldType":"string","Value":"12624"},{"FieldName":"CREATEDBY","FieldType":"string","Value":"Travis Shuff"},{"FieldName":"Department","FieldType":"string","Value":"ICS"},{"FieldName":"Job Title","FieldType":"string","Value":"Da Boss"},{"FieldName":"Requestor Email","FieldType":"string","Value":"tshuff@chathamcounty.org"}]}];
-    //this.WorkOrders =  this.sortByProperty(this.WorkOrders,'DEPARTMENT')
-    return this.WorkOrders;
-    */
+    this.GetWO();
   }
 
-   //Post Data
-   GetWO(){
+  //Post Data
+  GetWO() {
+    this.CreateLoader("GetWO");
     return new Promise((resolve, reject) => {
-      this.http.get(apiBase + "GetOpenWorkorders2?api=" +this.apiKey )
-      .subscribe(res => {
-        resolve(res);
-        this.WorkOrders = res;
-        //this.sortByProperty(this.WorkOrders,'DEPARTMENT')
-
-      }, 
-      (err) => {
-        reject(err);
-      });
+      this.http.get(apiBase + "GetOpenWorkorders2?api=" + this.apiKey)
+        .subscribe(
+          res => {
+            resolve(res);
+            this.WorkOrders = res;
+            this.DismissLoader();
+          },
+          (err) => {
+            reject(err);
+          },
+          () => {
+            this.DismissLoader();
+          }
+        );
     });
   }
 
-  
-  GetEmail(em, id){
-    try{
-      return "<a href='mailTo:" + em + "?subject=Workorder: "+ id+"'  >"+ em + "</a>"
+
+  GetEmail(em, id) {
+    try {
+      return "<a href='mailTo:" + em + "?subject=Workorder: " + id + "'  >" + em + "</a>"
     }
     catch{
       return em
     }
   }
 
+  //Get user list async and save to storage, if empty over a day old
+  //Get Userlist
+
+  GetUsers() {
+    try {
+      var allUsers : any;
+        this.favoriteProvider.getAllUsersList().then(
+          data => {
+            if (data) {
+              var today = new Date().valueOf();
+              var validDate = data["validDate"];
+              if(data["validDate"] < (today - msInDay)  ){
+                return new Promise((resolve, reject) => {
+                  this.http.get(apiBase + "GetAllRequesters?api=" + this.UserInfo["userApi"])
+                    .subscribe(
+                      res => {
+                      resolve(res);
+                        var userList :any = {validDate : new Date().valueOf(),userList : res};
+                        this.favoriteProvider.insertAllUserList(userList);
+                      },
+                      (err) => {
+                        reject(err);
+                      });
+                });
+              }
+            }
+            else{ //There is no data saved
+              return new Promise((resolve, reject) => {
+                this.http.get(apiBase + "GetAllRequesters?api=" + this.UserInfo["userApi"])
+                  .subscribe(
+                    res => {
+                    resolve(res);
+                      var userList :any = {validDate : new Date().valueOf(),userList : res};
+                      this.favoriteProvider.insertAllUserList(userList);
+                    },
+                    (err) => {
+                      reject(err);
+                    });
+                 });
+            }
+          }
+        )
+      }
+      catch (err) {
+      console.log('error: ' + JSON.stringify(err));
+    }
+  }
 
 
   // END OF THE WORLD

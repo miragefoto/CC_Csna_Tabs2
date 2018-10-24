@@ -8,49 +8,43 @@
 
 <ion-content padding>
   <ion-item>
-    <button ion-button class="button button-block icon icon-left ion-home" (click)="scan()" color="secondary">Scan for
-      Details </button>
+    <button ion-button class="button button-block icon icon-left ion-home" (click)="scan()" color="secondary">Scan for Details </button>
   </ion-item>
   <br />
 
   <ion-item *ngIf="num">
-    <ion-label >Tag No: {{num}}</ion-label>
+    <ion-label>Tag No: {{num}}</ion-label>
   </ion-item>
-<div *ngIf="scanResult">
-  <ion-list>
-    <ul *ngFor="let s of scanResult"  >
+
+
+   <!-- Scan has completed -->
+  <div *ngIf="scanResult">
+    <ion-list>
+      <ul *ngFor="let s of scanResult">
         <li style="word-wrap: break-word; font-size:smaller" text-wrap>{{s.FieldName}} : {{s.Value}}</li>
-    </ul>
-  </ion-list>
- 
-
-<div>
-  Update Assigned User / Department<br/>
-  <ion-list>
-    <ion-item>
-      <ion-label>New User</ion-label>
-      <ion-select [(ngModel)]="newUser"  >
-        <ion-option *ngFor="let s of users" value={{s}} >{{s}}</ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <button ion-button smaller round outline color="primary" (click)="Reassign()">Reassign</button>
-    </ion-item>
-  </ion-list>
-</div>
-</div>
-
+      </ul>
+    </ion-list>
+    <br />
+    <div>
+      Assign to new User<br />
+      <ion-item>
+        <!-- <ion-label>New User</ion-label> -->
+        <ionic-selectable item-content [(ngModel)]="newUser" [items]="users" [canSearch]="true" (onChange)="userChange($event)" >
+        </ionic-selectable>
+      </ion-item>
+      <br/>
+      <ion-item>
+        <button ion-button smaller round outline color="primary" (click)="Reassign()">Reassign</button>
+      </ion-item>
+      
+    </div>
+  </div>
 
   <ion-item *ngIf="!scanResult && scanned">
     <ion-label>No Results Found!</ion-label>
   </ion-item>
   <ion-item *ngIf="!scanned">
-      <ion-label>Waiting!</ion-label>
+    <ion-label>Waiting!</ion-label>
   </ion-item>
-
-  
-
-
 
 </ion-content>
