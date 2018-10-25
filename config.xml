@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>CC_Scan2</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+<widget id="gov.ChathamCountyGA.CCServiceDesk" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+&gt;
+                                            <name>CC Service Desk</name>
+    <description>Chatham COunty Custom ServiceDesk Application</description>
+    <author email="ephillips@chathamcounty.org" href="https://ChathamCountyGA.gov/">Chatham County ICS</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -86,6 +87,6 @@
     <plugin name="cordova-plugin-android-permissions" spec="1.0.0" />
     <plugin name="phonegap-plugin-barcodescanner" spec="^8.0.0" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
-    <engine name="android" spec="7.1.1" />
-    <engine name="ios" spec="4.5.5" />
+    <engine name="android" spec="~7.1.1" />
+    <engine name="ios" spec="~4.5.5" />
 </widget>

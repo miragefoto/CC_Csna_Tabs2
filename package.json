@@ -47,7 +47,7 @@
     "ionic-angular": "3.9.2",
     "ionic-selectable": "^3.0.3",
     "ionicons": "3.0.0",
-    "mx.ferreyra.callnumber": "~0.0.2",
+    "mx.ferreyra.callnumber": "0.0.2",
     "phonegap-plugin-barcodescanner": "^8.0.0",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
@@ -74,7 +74,8 @@
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "call-number": {}
     },
     "platforms": [
       "android",
