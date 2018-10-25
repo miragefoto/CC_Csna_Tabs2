@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CallNumber } from '@ionic-native/call-number';
-import { FavoriteProvider } from './../../providers/favorite/favorite';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -17,7 +16,6 @@ const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefee
 
 export class WoDetailsPage {
   public loading: any;
-  private WorkOrder: any;
   public WO: string = "";
   public Desc: string;
   public note: string;
@@ -40,7 +38,6 @@ export class WoDetailsPage {
     private view: ViewController,
     private callNumber: CallNumber,
     public sanitizer: DomSanitizer,
-    private favoriteProvider: FavoriteProvider,
     private loadingController: LoadingController,
     private http: HttpClient) {
     this.CreateLoader("details constructor ");
@@ -62,7 +59,6 @@ export class WoDetailsPage {
     this.callNumber.callNumber(num.replace(/-/g, ""), true);
     this.callNumber.isCallSupported()
       .then(function (response) {
-        alert(response);
         if (response == true) {
           try {
             this.callNumber.callNumber(num.replace(/-/g, ""), true);
@@ -147,7 +143,6 @@ export class WoDetailsPage {
         .subscribe(
           res => {
             resolve(res);
-            this.WorkOrder = res;
             for (var i = 0; i < 100; i++) {
               try {
                 if (res[i]["FieldName"] == "Description") {

@@ -1,8 +1,8 @@
-import { Component, Pipe } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController } from 'ionic-angular';
 //Add storage access
 import { FavoriteProvider } from './../../providers/favorite/favorite';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TabsPage } from '../tabs/tabs'
 
 const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/";
@@ -161,12 +161,10 @@ export class HomePage {
 
   GetUsers() {
     try {
-      var allUsers : any;
         this.favoriteProvider.getAllUsersList().then(
           data => {
             if (data) {
               var today = new Date().valueOf();
-              var validDate = data["validDate"];
               if(data["validDate"] < (today - msInDay)  ){
                 return new Promise((resolve, reject) => {
                   this.http.get(apiBase + "GetAllRequesters?api=" + this.UserInfo["userApi"])

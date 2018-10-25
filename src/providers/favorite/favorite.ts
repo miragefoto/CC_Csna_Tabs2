@@ -1,12 +1,10 @@
 
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { HttpModule } from '@angular/http';
 
 const STORAGE_KEY = 'scannedItems';
 const USER_KEY = 'UserName';
 const USER_INFO =  "UserInfo";
-const USER_API = "UserApi";
 const All_USER_LIST = "AllUserList";
  
 @Injectable()

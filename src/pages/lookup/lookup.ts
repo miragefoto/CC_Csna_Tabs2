@@ -3,16 +3,13 @@ import { FavoriteProvider } from './../../providers/favorite/favorite';
 //Common Controls
 import { Component } from '@angular/core';
 import { NavController, NavParams, Platform, LoadingController } from 'ionic-angular';
-// Add popups
-import { ToastController } from 'ionic-angular';
+
 // Add BarcodeScanner
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 //Post
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { IonicSelectableModule } from 'ionic-selectable';
-import { CachedResourceLoader } from '@angular/platform-browser-dynamic/src/resource_loader/resource_loader_cache';
-import { resolveDefinition } from '@angular/core/src/view/util';
 
 const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/";
 
@@ -43,7 +40,6 @@ export class LookupPage {
   constructor(
     public navCtrl: NavController,
     public barcodeScanner: BarcodeScanner,
-    private toaster: ToastController,
     public platform: Platform,
     public navController: NavController,
     public navParams: NavParams,
