@@ -29,6 +29,7 @@ export class WoDetailsPage {
   public isPublic: boolean = false;
   public addTime: boolean = false;
   public ShowDetail: boolean = true;
+  public WorkOrder :any;
   public pics: Array<SafeHtml> = new Array<SafeHtml>();
 
   public UserInfo: {};
@@ -56,9 +57,11 @@ export class WoDetailsPage {
   }
 
   CallNumber(num: string) {
+    alert("passed number: " +num);
     this.callNumber.callNumber(num.replace(/-/g, ""), true);
     this.callNumber.isCallSupported()
       .then(function (response) {
+        alert(response);
         if (response == true) {
           try {
             this.callNumber.callNumber(num.replace(/-/g, ""), true);
@@ -142,8 +145,9 @@ export class WoDetailsPage {
       this.http.get(apiBase + "GetWorkorderDetails?WO=" + this.WO + "&api=" + this.UserInfo["userApi"])
         .subscribe(
           res => {
+            this.WorkOrder = res;
             resolve(res);
-            for (var i = 0; i < 100; i++) {
+            for (var i = 0; i < this.WorkOrder.length ; i++) {
               try {
                 if (res[i]["FieldName"] == "Description") {
                   this.Desc = res[i]["Value"];

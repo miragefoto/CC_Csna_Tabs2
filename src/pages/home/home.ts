@@ -5,6 +5,8 @@ import { FavoriteProvider } from './../../providers/favorite/favorite';
 import { HttpClient } from '@angular/common/http';
 import { TabsPage } from '../tabs/tabs'
 
+import { CallNumber } from '@ionic-native/call-number';
+
 const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/";
 const msInDay = 86400000;
 
@@ -26,10 +28,34 @@ export class HomePage {
     public navCtrl: NavController,
     public http: HttpClient,
     public modal: ModalController,
+    private callNumber: CallNumber,
     public loadingController: LoadingController,
     public favoriteProvider: FavoriteProvider) {
       this.CheckForUser();
   }
+
+
+
+  CallNumber(num: string) {
+    alert("passed number: " +num);
+    this.callNumber.callNumber(num.replace(/-/g, ""), true);
+    this.callNumber.isCallSupported()
+      .then(function (response) {
+      
+        if (response == true) {
+          try {
+            this.callNumber.callNumber(num.replace(/-/g, ""), true);
+          } catch (err) {
+            alert(JSON.stringify(err));
+          }
+        }
+        else {
+          alert("Calling not supported");
+          alert(JSON.stringify(response));
+        }
+      });
+  0}
+
 
   ionViewDidLoad() {
   }
