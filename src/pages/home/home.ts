@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { TabsPage } from '../tabs/tabs'
 
 import { CallNumber } from '@ionic-native/call-number';
+import { Pro } from '@ionic/pro';
+
 
 const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/";
 const msInDay = 86400000;
@@ -38,23 +40,32 @@ export class HomePage {
 
   CallNumber(num: string) {
     //alert("passed number: " +num);
-    this.callNumber.callNumber(num.replace(/-/g, ""), true);
-    this.callNumber.isCallSupported()
-      .then(function (response) {
-      
-        if (response == true) {
-          try {
-            this.callNumber.callNumber(num.replace(/-/g, ""), true);
-          } catch (err) {
-            alert(JSON.stringify(err));
+    Pro.monitoring.log('Calling the number function for number: ' + num, { level: 'error' })
+    Pro.monitoring.call(() => {
+
+      this.callNumber.callNumber(num.replace(/-/g, ""), true);
+      this.callNumber.isCallSupported()
+        .then(function (response) {
+        
+          if (response == true) {
+            try {
+              this.callNumber.callNumber(num.replace(/-/g, ""), true);
+            } catch (err) {
+              alert(JSON.stringify(err));
+            }
           }
-        }
-        else {
-          alert("Calling not supported");
-          alert(JSON.stringify(response));
-        }
-      });
-  0}
+          else {
+            alert("Calling not supported");
+            alert(JSON.stringify(response));
+          }
+        });
+
+
+      throw new Error('error');
+    })
+    
+   
+  }
 
 
   ionViewDidLoad() {
