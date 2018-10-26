@@ -37,7 +37,7 @@ export class HomePage {
 
 
   CallNumber(num: string) {
-    alert("passed number: " +num);
+    //alert("passed number: " +num);
     this.callNumber.callNumber(num.replace(/-/g, ""), true);
     this.callNumber.isCallSupported()
       .then(function (response) {
