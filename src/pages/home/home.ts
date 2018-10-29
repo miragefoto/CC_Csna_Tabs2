@@ -43,28 +43,19 @@ export class HomePage {
     Pro.monitoring.log('Calling the number function for number: ' + num, { level: 'error' })
     Pro.monitoring.call(() => {
 
-      this.callNumber.callNumber(num.replace(/-/g, ""), true);
+      //this.callNumber.callNumber(num.replace(/-/g, ""), true);
       this.callNumber.isCallSupported()
         .then(function (response) {
-        
           if (response == true) {
-            try {
               this.callNumber.callNumber(num.replace(/-/g, ""), true);
-            } catch (err) {
-              alert(JSON.stringify(err));
-            }
           }
           else {
             alert("Calling not supported");
-            alert(JSON.stringify(response));
+            Pro.monitoring.log('Calling not supported: '+ JSON.stringify(response), { level: 'error' });
           }
         });
-
-
       throw new Error('error');
     })
-    
-   
   }
 
 
@@ -72,17 +63,21 @@ export class HomePage {
   }
 
   CheckForUser(){
+    Pro.monitoring.log('CheckForUser Firing', { level: 'error' })
     try {
       if (!this.UserInfo) {
         this.favoriteProvider.getUserInfo().then(
           data => {
             if (data) {
               this.UserInfo = JSON.parse(data);
-              this.apiKey = this.UserInfo["userApi"] || " ";
+              this.apiKey = this.UserInfo["userApi"];
               this.user = this.UserInfo["username"];
               this.techId = this.UserInfo["techId"];
               this.UserInfo = { username: this.user, userApi: this.apiKey, techId: this.techId };
-              this.GetUsers();
+              Pro.monitoring.call(() => {
+                this.GetUsers();
+                throw new Error('error');
+              })
             }
           }
         )
@@ -90,6 +85,7 @@ export class HomePage {
     }
     catch (err) {
       console.log('error: ' + JSON.stringify(err));
+      Pro.monitoring.log('Error in CheckForUser: ' + JSON.stringify(err), { level: 'error' })
     }
   }
 

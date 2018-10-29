@@ -5,6 +5,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Pro } from '@ionic/pro';
 
 const apiBase = "http://servicedeskfeeds.chathamcounty.org/servicedeskoutsidefeed.asmx/";
 
@@ -58,20 +59,19 @@ export class WoDetailsPage {
 
   CallNumber(num: string) {
   //  alert("passed number: " +num);
-    this.callNumber.callNumber(num.replace(/-/g, ""), true);
+    //this.callNumber.callNumber(num.replace(/-/g, ""), true);
     this.callNumber.isCallSupported()
       .then(function (response) {
-     //   alert(response);
         if (response == true) {
           try {
             this.callNumber.callNumber(num.replace(/-/g, ""), true);
           } catch (err) {
-            alert(JSON.stringify(err));
+              Pro.monitoring.log('Calling error: '+ JSON.stringify(err), { level: 'error' });
           }
         }
         else {
           alert("Calling not supported");
-          alert(JSON.stringify(response));
+          Pro.monitoring.log('Calling not supported: '+ JSON.stringify(response), { level: 'error' });
         }
       });
   }
