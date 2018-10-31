@@ -79,7 +79,6 @@ export class HomePage {
               this.UserInfo = { username: this.user, userApi: this.apiKey, techId: this.techId };
               Pro.monitoring.call(() => {
                 this.GetUsers();
-                throw new Error('error');
               })
             }
           }
