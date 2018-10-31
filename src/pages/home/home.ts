@@ -39,11 +39,13 @@ export class HomePage {
 
 
   CallNumber(num: string) {
-    //alert("passed number: " +num);
-    Pro.monitoring.log('Calling the number function for number: ' + num, { level: 'error' })
+    Pro.monitoring.log('Calling the number function for number: ' + num.replace(/\D/g,''), { level: 'error' });
     Pro.monitoring.call(() => {
 
-      //this.callNumber.callNumber(num.replace(/-/g, ""), true);
+      this.callNumber.callNumber(num.replace(/\D/g,''), true)
+      .then(res => Pro.monitoring.log('Launched dialer!' + JSON.stringify(res), { level: 'error' }))
+      .catch(err => Pro.monitoring.log('Error launching dialer' + JSON.stringify(err), { level: 'error' }));
+      /*
       this.callNumber.isCallSupported()
         .then(function (response) {
           if (response == true) {
@@ -54,7 +56,8 @@ export class HomePage {
             Pro.monitoring.log('Calling not supported: '+ JSON.stringify(response), { level: 'error' });
           }
         });
-      throw new Error('error');
+        */
+      //throw new Error('error');
     })
   }
 

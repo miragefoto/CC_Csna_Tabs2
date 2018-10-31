@@ -58,22 +58,11 @@ export class WoDetailsPage {
   }
 
   CallNumber(num: string) {
-  //  alert("passed number: " +num);
-    //this.callNumber.callNumber(num.replace(/-/g, ""), true);
-    this.callNumber.isCallSupported()
-      .then(function (response) {
-        if (response == true) {
-          try {
-            this.callNumber.callNumber(num.replace(/-/g, ""), true);
-          } catch (err) {
-              Pro.monitoring.log('Calling error: '+ JSON.stringify(err), { level: 'error' });
-          }
-        }
-        else {
-          alert("Calling not supported");
-          Pro.monitoring.log('Calling not supported: '+ JSON.stringify(response), { level: 'error' });
-        }
-      });
+    Pro.monitoring.log('Calling the number function for number: ' + num.replace(/\D/g,''), { level: 'error' });
+    Pro.monitoring.call(() => {
+    this.callNumber.callNumber(num.replace(/\D/g,''), true);
+    });
+    
   }
 
   AddNote() {
